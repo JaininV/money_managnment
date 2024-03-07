@@ -4,7 +4,7 @@ from controller.users import userData, addUser
 user_blueprint = Blueprint('users', __name__)
  
 
-@user_blueprint.route('/users', methods=['GET'])
+@user_blueprint.route('/user/', methods=['GET'])
 def user_data_api():
     # Your API logic here
     data = userData()
