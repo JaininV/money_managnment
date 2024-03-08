@@ -1,6 +1,6 @@
 #Import users function from model folder
 from flask import Flask, render_template, jsonify, request
-from models.users import getDataApi, addUserApi, updateDataApi
+from models.users import getDataApi, addUserApi, updateDataApi, deleteDataApi
 import asyncio
  
 def userData(): 
@@ -20,4 +20,12 @@ def updateUser():
     
     except Exception as e:
         return f"Error: {str(e)}"
- 
+
+def deleteUser():
+    try: 
+        data = request.form
+        page = deleteDataApi(data)
+        return page
+    
+    except Exception as e:
+        return f"Error: {str(e)}"

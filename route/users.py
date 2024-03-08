@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from controller.users import userData, addUser, updateUser
+from controller.users import userData, addUser, updateUser, deleteUser
 
 user_blueprint = Blueprint('users', __name__)
  
@@ -20,5 +20,11 @@ def add_User():
 def update_user():
     # Your API logic here
     data = updateUser()
+    return data
+
+@user_blueprint.route('/user/delete', methods=['DELETE'])
+def delete_user():
+    # Your API logic here
+    data = deleteUser()
     return data
  

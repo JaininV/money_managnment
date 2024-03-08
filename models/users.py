@@ -6,7 +6,7 @@ import json
 # Simulated async function
 def getDataApi():
     try:
-        cursor.execute("SELECT * FROM user_details")
+        cursor.execute("SELECT * FROM user_details WHERE status = 'active'")
         results = cursor.fetchall()
         print(results)
         connection.commit()
@@ -32,7 +32,7 @@ def addUserApi(data):
 
     # cursor = connection.cursor()
     
-    cursor.execute("SELECT * From user_details where first_name = %s AND last_name = %s", (first_name, last_name))
+    cursor.execute("SELECT * From user_details where first_name = %s AND last_name = %s WHERE status = 'active'", (first_name, last_name))
     check = cursor.fetchone()
     connection.commit()
     
@@ -73,7 +73,7 @@ def updateDataApi(data):
         phone_bill = data['phone_bill']
         password = data['password']
 
-        cursor.execute("SELECT id, first_name, last_name From user_details where id = %s AND email_id = %s", (id, email_id))
+        cursor.execute("SELECT id, first_name, last_name From user_details where id = %s AND email_id = %s WHERE status = 'active'", (id, email_id))
         check = cursor.fetchone()
         connection.commit()
         
@@ -99,5 +99,37 @@ def updateDataApi(data):
             except Exception as e:
                 return f"Error: {str(e)}"
 
+    except Exception as e:
+        return f"Error: {str(e)}"
+    
+def deleteDataApi(data):
+    try:
+        id = data['id']
+        email_id = data['email_id']
+        status = 'inactive'
+        cursor.execute("SELECT id, first_name, last_name From user_details where id = %s AND email_id = %s AND status = 'active'", (id, email_id))
+        check = cursor.fetchone()
+        connection.commit()
+
+        if check is not None:
+            current_datetime = datetime.datetime.now()
+            formatted_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
+
+            query = "UPDATE user_details SET status = %s, updated_at = %s WHERE id = %s"
+            value = (status, formatted_datetime, id)
+
+            try:
+                cursor.execute(query, value)
+                results = connection.commit()
+                cursor.close()
+                connection.close()
+                return f'data is Deleted!'
+        
+            except Exception as e:
+                return f"Error: {str(e)}"
+        
+        else:
+            return f"User is not exit or information is invalid!"
+        
     except Exception as e:
         return f"Error: {str(e)}"
