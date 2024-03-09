@@ -40,12 +40,77 @@ def addUserApi(data):
         current_datetime = datetime.datetime.now()
         formatted_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
         
-        query = "INSERT INTO user_details (first_name, last_name, email_id, unique_id, bank_name, number_of_job, job_name, rent_or_insaurance, amount_rent_insaurance, car_or_transit, amount_car_transit, phone_bill, password, created_at, updated_at) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        # Inser user data query
+        insert_query = "INSERT INTO user_details (first_name, last_name, email_id, unique_id, bank_name, number_of_job, job_name, rent_or_insaurance, amount_rent_insaurance, car_or_transit, amount_car_transit, phone_bill, password, created_at, updated_at) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
         value = (first_name, last_name, email_id, unique_id, bank_name, number_of_job, job_name, rent_or_insaurance, amount_rent_insaurance, car_or_transit, amount_car_transit, phone_bill, password, formatted_datetime, formatted_datetime)
 
+        # Create job table query
+        job_table = """
+                        CREATE TABLE  {}_job (
+                        job_id INT(10) NOT NULL AUTO_INCREMENT,
+                        job_name VARCHAR(45) NOT NULL,
+                        wage INT(45) NOT NULL,
+                        status varchar(10) NOT NULL DEFAULT 'active',
+                        created_at DATETIME NOT NULL,
+                        updated_at DATETIME NOT NULL,
+                        PRIMARY KEY (`job_id`)
+                    );
+                    """.format(unique_id)
+        
+        # Shift table query
+        shift_table = """
+                        CREATE TABLE  {}_job (
+                            shift_id INT(10) NOT NULL AUTO_INCREMENT,
+                            job_id VARCHAR(45) NOT NULL,
+                            shift_day  varchar(45) NOT NULL,  
+                            shift_start_time DATETIME NOT NULL,
+                            shift_end_time DATETIME NOT NULL,
+                            total_hours INT(10) NOT NULL,
+                            pay INT(10) NOT NULL,
+                            PRIMARY KEY (`shift_id`)
+                        );
+                        """.format(unique_id)
+        
+        # Income table query
+        income_table = """
+                        CREATE TABLE  {}_income (
+                            income_id INT(10) NOT NULL AUTO_INCREMENT,
+                            job_id INT(45) NOT NULL,
+                            date DATETIME NOT NULL,
+                            total_amount INT(10) NOT NULL,
+                            PRIMARY KEY (`income_id`)
+                        );
+                        """.format(unique_id)
+        
+        # Expense query
+        expense_table = """
+                        CREATE TABLE  {}_expense (
+                            expense_id INT(10) NOT NULL AUTO_INCREMENT,
+                            expense_on VARCHAR(45) NOT NULL,
+                            type VARCHAR(45) NOT NULL,
+                            total_amount INT(10) NOT NULL,
+                            date DATETIME NOT NULL,
+                            PRIMARY KEY (`expense_id`)
+                        );
+                        """.format(unique_id)
+        
         try:
-            cursor.execute(query, value)
+            # Execute each query
+            cursor.execute(insert_query, value)
             results = connection.commit()
+            
+            cursor.execute(job_table)
+            connection.commit()
+
+            cursor.execute(shift_table)
+            connection.commit()
+
+            cursor.execute(income_table)
+            connection.commit()
+
+            cursor.execute(expense_table)
+            connection.commit()
+
             cursor.close()
             connection.close()
             return f'Welcome {first_name},'
