@@ -20,6 +20,7 @@ def addUserApi(data):
     first_name = data['first_name']
     last_name = data['last_name']
     email_id = data['email_id']
+    unique_id = data['unique_id']
     bank_name = data['bank_name']
     number_of_job = data['number_of_job']
     job_name = data['job_name']
@@ -29,20 +30,18 @@ def addUserApi(data):
     amount_car_transit =data['amount_car_transit']
     phone_bill = data['phone_bill']
     password = data['password']
-
-    # cursor = connection.cursor()
     
-    cursor.execute("SELECT * From user_details where first_name = %s AND last_name = %s WHERE status = 'active'", (first_name, last_name))
+    # Get data for verification
+    cursor.execute("SELECT id, first_name, last_name, unique_id From user_details where email_id = %s OR unique_id = %s AND status = 'active'", (email_id, unique_id))
     check = cursor.fetchone()
     connection.commit()
-    
 
     if check is None:
         current_datetime = datetime.datetime.now()
         formatted_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
         
-        query = "INSERT INTO user_details (first_name, last_name, email_id, bank_name, number_of_job, job_name, rent_or_insaurance, amount_rent_insaurance, car_or_transit, amount_car_transit, phone_bill, password, created_at, updated_at) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-        value = (first_name, last_name, email_id, bank_name, number_of_job, job_name, rent_or_insaurance, amount_rent_insaurance, car_or_transit, amount_car_transit, phone_bill, password, formatted_datetime, formatted_datetime)
+        query = "INSERT INTO user_details (first_name, last_name, email_id, unique_id, bank_name, number_of_job, job_name, rent_or_insaurance, amount_rent_insaurance, car_or_transit, amount_car_transit, phone_bill, password, created_at, updated_at) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        value = (first_name, last_name, email_id, unique_id, bank_name, number_of_job, job_name, rent_or_insaurance, amount_rent_insaurance, car_or_transit, amount_car_transit, phone_bill, password, formatted_datetime, formatted_datetime)
 
         try:
             cursor.execute(query, value)
@@ -59,10 +58,9 @@ def addUserApi(data):
 
 def updateDataApi(data):
     try:
-        id = data['id']
         first_name = data['first_name']
         last_name = data['last_name']
-        email_id = data['email_id']
+        unique_id = data['unique_id']
         bank_name = data['bank_name']
         number_of_job = data['number_of_job']
         job_name = data['job_name']
@@ -73,7 +71,7 @@ def updateDataApi(data):
         phone_bill = data['phone_bill']
         password = data['password']
 
-        cursor.execute("SELECT id, first_name, last_name From user_details where id = %s AND email_id = %s WHERE status = 'active'", (id, email_id))
+        cursor.execute("SELECT id, first_name, last_name From user_details where unique_id = %s AND status = %s", (unique_id, 'active'))
         check = cursor.fetchone()
         connection.commit()
         
@@ -85,8 +83,8 @@ def updateDataApi(data):
             current_datetime = datetime.datetime.now()
             formatted_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
 
-            query = "UPDATE user_details SET first_name = %s, last_name = %s, email_id = %s, bank_name = %s, number_of_job = %s, job_name = %s, rent_or_insaurance = %s, amount_rent_insaurance = %s, car_or_transit = %s, amount_car_transit = %s, phone_bill = %s, password = %s, updated_at = %s WHERE id = %s"
-            value = (first_name, last_name, email_id, bank_name, number_of_job, job_name, rent_or_insaurance, amount_rent_insaurance, car_or_transit, amount_car_transit, phone_bill, password, formatted_datetime, id)
+            query = "UPDATE user_details SET first_name = %s, last_name = %s, bank_name = %s, number_of_job = %s, job_name = %s, rent_or_insaurance = %s, amount_rent_insaurance = %s, car_or_transit = %s, amount_car_transit = %s, phone_bill = %s, password = %s, updated_at = %s WHERE unique_id = %s"
+            value = (first_name, last_name, bank_name, number_of_job, job_name, rent_or_insaurance, amount_rent_insaurance, car_or_transit, amount_car_transit, phone_bill, password, formatted_datetime, unique_id)
 
             # Execute query
             try:
@@ -104,10 +102,10 @@ def updateDataApi(data):
     
 def deleteDataApi(data):
     try:
-        id = data['id']
+        unique_id = data['unique_id']
         email_id = data['email_id']
         status = 'inactive'
-        cursor.execute("SELECT id, first_name, last_name From user_details where id = %s AND email_id = %s AND status = 'active'", (id, email_id))
+        cursor.execute("SELECT id, first_name, last_name From user_details where unique_id = %s AND email_id = %s AND status = 'active'", (unique_id, email_id))
         check = cursor.fetchone()
         connection.commit()
 
@@ -115,8 +113,8 @@ def deleteDataApi(data):
             current_datetime = datetime.datetime.now()
             formatted_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
 
-            query = "UPDATE user_details SET status = %s, updated_at = %s WHERE id = %s"
-            value = (status, formatted_datetime, id)
+            query = "UPDATE user_details SET status = %s, updated_at = %s WHERE unique_id = %s"
+            value = (status, formatted_datetime, unique_id)
 
             try:
                 cursor.execute(query, value)
