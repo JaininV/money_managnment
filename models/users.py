@@ -59,7 +59,7 @@ def addUserApi(data):
         
         # Shift table query
         shift_table = """
-                        CREATE TABLE  {}_job (
+                        CREATE TABLE  {}_shift (
                             shift_id INT(10) NOT NULL AUTO_INCREMENT,
                             job_id VARCHAR(45) NOT NULL,
                             shift_day  varchar(45) NOT NULL,  
@@ -105,12 +105,12 @@ def addUserApi(data):
             cursor.execute(shift_table)
             connection.commit()
 
-            cursor.execute(income_table)
+            cursor.execute(income_table) 
             connection.commit()
 
             cursor.execute(expense_table)
             connection.commit()
-
+            
             cursor.close()
             connection.close()
             return f'Welcome {first_name},'
