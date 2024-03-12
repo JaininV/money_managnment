@@ -11,13 +11,35 @@ def loginUserApi(data):
         userid = data['userid']
         password = data['password']
 
-        cursor.execute("SELECT * FROM user_details WHERE status = 'active'")
-        results = cursor.fetchall()
-        print(results)
+        cursor.execute("SELECT * FROM user_details WHERE unique_id = %s AND status = %s",(userid, 'active'))
+        results = cursor.fetchone()
         connection.commit()
-    finally:
-        cursor.close()
-        connection.close()
 
-    return {'data': data}
+        if results is not None:
+            cursor.execute("SELECT * FROM user_details WHERE unique_id = %s AND password = %s AND status = %s",(userid, password, 'active'))
+            results = cursor.fetchone()
+            connection.commit()
+
+            if results is not None:
+                try:
+                    token_gen = create_access_token(identity=userid)
+
+                    return ({
+                        'token': token_gen
+                    })
+                except Exception as e:
+                    return f"Error: {str(e)}"
+                
+            else:
+                return "Password is incorrect"
+        
+        else:
+            return 'User is not exist'
+
+    except Exception as e:
+        return f"Error: {str(e)}"
+
+def loginCheckApi(data):
+    current_user = get_jwt_identity()
+    return current_user
  
