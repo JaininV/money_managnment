@@ -1,4 +1,21 @@
-create database money_handle;
-use money_handle;
-
-select * from user_details;
+CREATE TABLE `money_handle`.`user_details` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `first_name` VARCHAR(45) NOT NULL,
+  `last_name` VARCHAR(45) NOT NULL,
+  `email_id` VARCHAR(100) NOT NULL,
+  `unique_id` VARCHAR(45) NOT NULL,
+  `bank_name` VARCHAR(45) NOT NULL,
+  `number_of_job` INT NOT NULL,
+  `job_name` VARCHAR(100) NOT NULL,
+  `rent_or_insaurance` VARCHAR(45) NOT NULL,
+  `amount_rent_insaurance` INT NOT NULL,
+  `car_or_transit` VARCHAR(45) NOT NULL,
+  `amount_car_transit` INT NOT NULL,
+  `phone_bill` INT NOT NULL,
+  `password` VARCHAR(45) NOT NULL,
+  `status` VARCHAR(45) NOT NULL DEFAULT 'active',
+  `created_at` DATETIME NOT NULL,
+  `updated_at` DATETIME NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `unique_id_UNIQUE` (`unique_id` ASC) VISIBLE,
+  UNIQUE INDEX `password_UNIQUE` (`password` ASC) VISIBLE);

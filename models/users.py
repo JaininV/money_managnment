@@ -43,13 +43,13 @@ def addUserApi(data):
         # Inser user data query
         insert_query = "INSERT INTO user_details (first_name, last_name, email_id, unique_id, bank_name, number_of_job, job_name, rent_or_insaurance, amount_rent_insaurance, car_or_transit, amount_car_transit, phone_bill, password, created_at, updated_at) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
         value = (first_name, last_name, email_id, unique_id, bank_name, number_of_job, job_name, rent_or_insaurance, amount_rent_insaurance, car_or_transit, amount_car_transit, phone_bill, password, formatted_datetime, formatted_datetime)
-
+        
         # Create job table query
         job_table = """
                         CREATE TABLE  {}_job (
                         job_id INT(10) NOT NULL AUTO_INCREMENT,
                         job_name VARCHAR(45) NOT NULL,
-                        wage INT(45) NOT NULL,
+                        wage INT(45) NOT NULL DEFAULT 16.55,
                         status varchar(10) NOT NULL DEFAULT 'active',
                         created_at DATETIME NOT NULL,
                         updated_at DATETIME NOT NULL,
@@ -161,7 +161,7 @@ def updateDataApi(data):
         
             except Exception as e:
                 return f"Error: {str(e)}"
-
+  
     except Exception as e:
         return f"Error: {str(e)}"
     

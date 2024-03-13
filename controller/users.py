@@ -10,7 +10,7 @@ def userData():
 def addUser():
     data = request.form
     page = addUserApi(data)
-    return page
+    return page           
 
 def updateUser():
     try: 
@@ -21,7 +21,7 @@ def updateUser():
     except Exception as e:
         return f"Error: {str(e)}"
 
-def deleteUser():
+def deleteUser(): 
     try: 
         data = request.form
         page = deleteDataApi(data)

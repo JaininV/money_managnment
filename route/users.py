@@ -11,7 +11,7 @@ def user_data_api():
     return data
 
 @user_blueprint.route('/user/add', methods=['POST'])
-def add_User():
+def add_User(): 
     # Your API logic here
     data = addUser()
     return data
