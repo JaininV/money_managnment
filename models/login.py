@@ -42,5 +42,5 @@ def loginCheckApi(data):
     verify_jwt_in_request()
     current_user = get_jwt_identity()
     print(current_user)
-    return 'current_user'
+    return current_user
  
