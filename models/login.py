@@ -38,9 +38,9 @@ def loginUserApi(data):
     except Exception as e:
         return f"Error: {str(e)}"
 
-def loginCheckApi(data):
+def loginCheckApi():
     verify_jwt_in_request()
     current_user = get_jwt_identity()
-    print(current_user)
-    return current_user
+    
+    return {'user': current_user}
  

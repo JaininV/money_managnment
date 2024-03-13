@@ -1,21 +1,18 @@
 from flask import Flask, render_template, jsonify, request
 from db_connection import connection, cursor
+from models.login import loginCheckApi
 import datetime
 import json
 
 # Simulated async function
-def getDataApi():
+def getShiftDataApi():
     try:
-        cursor.execute("SELECT * FROM user_details WHERE status = 'active'")
-        results = cursor.fetchall()
-        print(results)
-        connection.commit()
-    finally:
-        cursor.close()
-        connection.close()
-
-    return {'data': results}
- 
+        userid = loginCheckApi()
+        return {'user_id': userid['user']}
+        
+    except Exception as e:
+        return f"Error: {str(e)}"
+    
 def addUserApi(data):
     first_name = data['first_name']
     last_name = data['last_name']

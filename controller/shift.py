@@ -1,30 +1,11 @@
 #Import users function from model folder
 from flask import Flask, render_template, jsonify, request
-from models.users import getDataApi, addUserApi, updateDataApi, deleteDataApi
+from models.shift import getShiftDataApi
 import asyncio
  
-def userData(): 
-    user_data = getDataApi()
-    return user_data
-
-def addUser():
-    data = request.form
-    page = addUserApi(data)
-    return page
-
-def updateUser():
+def getShiftData():
     try: 
-        data = request.form
-        page = updateDataApi(data)
-        return page
-    
-    except Exception as e:
-        return f"Error: {str(e)}"
-
-def deleteUser():
-    try: 
-        data = request.form
-        page = deleteDataApi(data)
+        page = getShiftDataApi()
         return page
     
     except Exception as e:

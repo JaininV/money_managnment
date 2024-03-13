@@ -14,8 +14,7 @@ def loginUser():
 
 def loginCheck():
     try: 
-        data = request.form
-        page = loginCheckApi(data)
+        page = loginCheckApi()
         return page
     
     except Exception as e:
