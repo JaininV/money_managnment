@@ -1,6 +1,6 @@
 #Import users function from model folder
 from flask import Flask, render_template, jsonify, request
-from models.shift import getShiftDataApi, addJobApi, updateJobApi, deleteJobApi
+from models.job import getShiftDataApi, addJobApi, updateJobApi, deleteJobApi
 import asyncio
  
 def getShiftData():
