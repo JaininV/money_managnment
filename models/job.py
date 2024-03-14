@@ -1,7 +1,7 @@
 from flask import Flask, render_template, jsonify, request
 from db_connection import connection, cursor
 from models.login import loginCheckApi
-import datetime
+from datetime import datetime
 import json
 
 # get all jobs
@@ -32,7 +32,7 @@ def addJobApi(data):
         job_name = data['job_name']
         wage = data['wage']
         
-        current_datetime = datetime.datetime.now()
+        current_datetime = datetime.now()
         formatted_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
 
         check_query = """
@@ -74,7 +74,7 @@ def updateJobApi(data):
         wage = data['wage']
         job_name = data['job_name']        
         
-        current_datetime = datetime.datetime.now()
+        current_datetime = datetime.now()
         formatted_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
 
         check_query = """
@@ -116,7 +116,7 @@ def deleteJobApi(data):
         user_id = token['user']
         job_name = data['job_name']        
         
-        current_datetime = datetime.datetime.now()
+        current_datetime = datetime.now()
         formatted_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
 
         check_query = """

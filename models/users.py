@@ -1,6 +1,6 @@
 from flask import Flask, render_template, jsonify, request
 from db_connection import connection, cursor
-import datetime
+from datetime import datetime
 import json
 
 # Simulated async function
@@ -37,7 +37,7 @@ def addUserApi(data):
     connection.commit()
 
     if check is None:
-        current_datetime = datetime.datetime.now()
+        current_datetime = datetime.now()
         formatted_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
         
         # Inser user data query
@@ -145,7 +145,7 @@ def updateDataApi(data):
             return f"User is not exit!"
         
         else:
-            current_datetime = datetime.datetime.now()
+            current_datetime = datetime.now()
             formatted_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
 
             query = "UPDATE user_details SET first_name = %s, last_name = %s, bank_name = %s, number_of_job = %s, job_name = %s, rent_or_insaurance = %s, amount_rent_insaurance = %s, car_or_transit = %s, amount_car_transit = %s, phone_bill = %s, password = %s, updated_at = %s WHERE unique_id = %s"
@@ -175,7 +175,7 @@ def deleteDataApi(data):
         connection.commit()
 
         if check is not None:
-            current_datetime = datetime.datetime.now()
+            current_datetime = datetime.now()
             formatted_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
 
             query = "UPDATE user_details SET status = %s, updated_at = %s WHERE unique_id = %s"

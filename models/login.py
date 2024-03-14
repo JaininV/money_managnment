@@ -3,7 +3,7 @@ from flask_jwt_extended import JWTManager, create_access_token, jwt_required, ge
 
 
 from db_connection import connection, cursor
-import datetime
+from datetime import datetime
 import json
 
 # Simulated async function

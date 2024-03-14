@@ -1,6 +1,6 @@
 from flask import Flask, render_template, jsonify, request
 from db_connection import connection, cursor
-from datetime import datetime
+from datetime from datetime import datetime
 from PIL import Image
 import base64
 from io import BytesIO

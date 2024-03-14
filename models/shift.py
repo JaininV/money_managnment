@@ -1,7 +1,8 @@
 from flask import Flask, render_template, jsonify, request
 from db_connection import connection, cursor
 from models.login import loginCheckApi
-import datetime
+from datetime import datetime
+import calendar
 import json
 
 # get all jobs
@@ -23,46 +24,50 @@ def getShiftDataApi():
         
     except Exception as e:
         return f"Error: {str(e)}"
-    
+     
 # Add new jobs
-def addJobApi(data):
+def addShiftApi(data):
     try:
         token = loginCheckApi()
         user_id = token['user']
-        job_name = data['job_name']
-        wage = data['wage']
-        
-        current_datetime = datetime.datetime.now()
+        current_datetime = datetime.now()
         formatted_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
-
-        check_query = """
-                        SELECT job_id
-                        FROM {}_job
-                        WHERE job_name = '{}'
-                        """.format(user_id, job_name)
+        start_time = data['start_time']
+        start_time = datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")
+        end_time = data['end_time']
+        end_time = datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
+        job_name = data['job']
         
-        cursor.execute(check_query)
-        check = cursor.fetchone()
+        # take id from job tabel
+        job_id_query = """
+                    SELECT job_id, wage 
+                    FROM {}_job
+                    WHERE job_name = '{}' AND status = 'active'
+                    """.format(user_id, job_name)
+        
+        cursor.execute(job_id_query)
+        job_id = cursor.fetchone()
         connection.commit()
-        
-        if check is None:
-            insert_query = """
-                            INSERT INTO {}_job
-                            (job_name, wage, created_at, updated_at)
-                            VALUES ('{}', {}, '{}', '{}')
-                            """.format(user_id, job_name, wage, formatted_datetime, formatted_datetime,)
-            values = (user_id, job_name, wage, formatted_datetime, formatted_datetime,)
-            cursor.execute(insert_query)
-            result = connection.commit()
 
-            return {
-                    'API execute time': formatted_datetime,
-                    'data': result,
-                    'login user': user_id
-                    }
+        # Arrange data for insert query
+        diff = end_time - start_time
+        days, seconds = diff.days, diff.seconds
+        total_hour = days * 24 + seconds / 3600
+        total_pay = total_hour*job_id[1]
+        week_day = calendar.day_name[start_time.weekday()]
+
+        insert_query = """
+                        INSERT INTO {}_shift
+                        (job_id, shift_day, shift_start_time, shift_end_time, total_hours, pay)
+                        VALUES ({}, '{}', '{}', '{}', {}, {})
+                        """.format(user_id, job_id[0], week_day, start_time, end_time, total_hour, total_pay)
         
-        else:
-            return f"Data already exists"
+        cursor.execute(insert_query)
+        connection.commit()
+
+        return {
+            'msg': 'Shift added'
+        }
     except Exception as e:
         return f"Error: {str(e)}"
 
@@ -74,7 +79,7 @@ def updateJobApi(data):
         wage = data['wage']
         job_name = data['job_name']        
         
-        current_datetime = datetime.datetime.now()
+        current_datetime = datetime.now()
         formatted_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
 
         check_query = """
@@ -116,7 +121,7 @@ def deleteJobApi(data):
         user_id = token['user']
         job_name = data['job_name']        
         
-        current_datetime = datetime.datetime.now()
+        current_datetime = datetime.now()
         formatted_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
 
         check_query = """
