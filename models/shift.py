@@ -30,12 +30,15 @@ def addShiftApi(data):
     try:
         token = loginCheckApi()
         user_id = token['user']
-        current_datetime = datetime.now()
-        formatted_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
         start_time = data['start_time']
         start_time = datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")
+        shift_date = start_time.time()
+        print(shift_date)
         end_time = data['end_time']
         end_time = datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
+        diff = end_time - start_time
+        days, seconds = diff.days, diff.seconds
+        total_hour = days * 24 + seconds / 3600
         job_name = data['job']
         
         # take id from job tabel
@@ -50,20 +53,22 @@ def addShiftApi(data):
         connection.commit()
 
         # Arrange data for insert query
-        diff = end_time - start_time
-        days, seconds = diff.days, diff.seconds
-        total_hour = days * 24 + seconds / 3600
         total_pay = total_hour*job_id[1]
         week_day = calendar.day_name[start_time.weekday()]
 
+        check  = """
+                    SELECT * FROM {}_shift 
+                    WHERE shift_start_time = 
+                """
+        # Executeing the query
         insert_query = """
                         INSERT INTO {}_shift
-                        (job_id, shift_day, shift_start_time, shift_end_time, total_hours, pay)
-                        VALUES ({}, '{}', '{}', '{}', {}, {})
-                        """.format(user_id, job_id[0], week_day, start_time, end_time, total_hour, total_pay)
+                        (job_id, shift_day, shift_date, shift_start_time, shift_end_time, total_hours, pay)
+                        VALUES ({}, '{}', '{}', '{}', '{}', {}, {})
+                        """.format(user_id, job_id[0], week_day, shift_date, start_time, end_time, total_hour, total_pay)
         
-        cursor.execute(insert_query)
-        connection.commit()
+        # cursor.execute(insert_query)
+        # connection.commit()
 
         return {
             'msg': 'Shift added'

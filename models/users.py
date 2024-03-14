@@ -62,7 +62,8 @@ def addUserApi(data):
                         CREATE TABLE  {}_shift (
                             shift_id INT(10) NOT NULL AUTO_INCREMENT,
                             job_id VARCHAR(45) NOT NULL,
-                            shift_day  varchar(45) NOT NULL,  
+                            shift_day  varchar(45) NOT NULL, 
+                            shift_date DATE NOT NULL, 
                             shift_start_time DATETIME NOT NULL,
                             shift_end_time DATETIME NOT NULL,
                             total_hours INT(10) NOT NULL,
