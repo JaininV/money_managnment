@@ -2,7 +2,6 @@ from flask import Blueprint, jsonify
 from controller.job import getShiftData, addJob, updateJob, deleteJob
 
 job_blueprint = Blueprint('jobs', __name__)
- 
 
 @job_blueprint.route('/job/', methods=['GET'])
 def get_job_data_api():
