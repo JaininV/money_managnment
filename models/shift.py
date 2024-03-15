@@ -75,15 +75,17 @@ def addShiftApi(data):
                     check_start_time = check_result[i][3]
                     check_end_time = check_result[i][4]
                     
-                    if (check_start_time <= start_time and check_end_time >= start_time) or (check_start_time <= end_time and check_end_time >= end_time):
+                    if (check_start_time <= start_time and check_end_time >= start_time) or (check_start_time <= end_time and check_end_time >= end_time) or (start_time <= check_start_time and end_time >= check_start_time) or (start_time <= check_end_time and end_time >= check_end_time):
                         count = count + 1 
                         continue
-                    
-                    else:
-                        count = count + 0
 
                 if count == 0:
+                    insert_query = """
+                                    INSERT INTO {}_shift
+                                    (job_id, shift_day, shift_date, shift_start_time, shift_end_time, time_timestamp, total_hour, pay)
+                                    """
                     return 'yes'
+                    
                 else:
                     return 'no'
 
