@@ -32,8 +32,8 @@ def addShiftApi(data):
         user_id = token['user']
         start_time = data['start_time']
         start_time = datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")
-        shift_date = start_time.time()
-        print(shift_date)
+        ts = datetime.timestamp(start_time)
+        shift_date = start_time.date()
         end_time = data['end_time']
         end_time = datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
         diff = end_time - start_time
@@ -57,22 +57,44 @@ def addShiftApi(data):
         week_day = calendar.day_name[start_time.weekday()]
 
         check  = """
-                    SELECT * FROM {}_shift 
-                    WHERE shift_start_time = 
-                """
+                    SELECT job_id, shift_day, shift_date, shift_start_time, shift_end_time, time_timestamp, total_hours
+                    FROM {}_shift 
+                    WHERE shift_date = '{}'
+                """.format(user_id, shift_date)
+        
+        # Execute check query
+        cursor.execute(check)
+        check_result = cursor.fetchall()
+        connection.commit()
+        
+        if check_result is not None:
+            length = len(check_result)
+            count = 0
+            for i in range(0, length):
+                check_start_time = check_result[i][3]
+                check_end_time = check_result[i][4]
+                
+                if check_start_time <= start_time and check_end_time >= start_time:
+                    return {
+                         'msg': 'You alredy have shift on this time period'
+                    }
+
+                else:
+                    count += 1 
+                    return 'yes'
+        else:
+            return 'no'
         # Executeing the query
-        insert_query = """
-                        INSERT INTO {}_shift
-                        (job_id, shift_day, shift_date, shift_start_time, shift_end_time, total_hours, pay)
-                        VALUES ({}, '{}', '{}', '{}', '{}', {}, {})
-                        """.format(user_id, job_id[0], week_day, shift_date, start_time, end_time, total_hour, total_pay)
+        # insert_query = """
+        #                 INSERT INTO {}_shift
+        #                 (job_id, shift_day, shift_date, shift_start_time, shift_end_time, time_timestamp, total_hours, pay)
+        #                 VALUES ({}, '{}', '{}', '{}', '{}', {}, {}, {})
+        #                 """.format(user_id, job_id[0], week_day, shift_date, start_time, end_time, ts, total_hour, total_pay)
+        
         
         # cursor.execute(insert_query)
         # connection.commit()
 
-        return {
-            'msg': 'Shift added'
-        }
     except Exception as e:
         return f"Error: {str(e)}"
 

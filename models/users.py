@@ -66,6 +66,7 @@ def addUserApi(data):
                             shift_date DATE NOT NULL, 
                             shift_start_time DATETIME NOT NULL,
                             shift_end_time DATETIME NOT NULL,
+                            time_timestamp INT(11) NOT NULL,
                             total_hours INT(10) NOT NULL,
                             pay INT(10) NOT NULL,
                             PRIMARY KEY (`shift_id`)
