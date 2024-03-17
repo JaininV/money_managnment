@@ -120,6 +120,7 @@ def addShiftApi(data):
 # Update data
 def updateJobApi(data):
     try:
+        print(data)
         token = loginCheckApi()
         user_id = token['user']
         wage = data['wage']
