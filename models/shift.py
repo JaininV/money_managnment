@@ -83,20 +83,37 @@ def addShiftApi(data):
                     insert_query = """
                                     INSERT INTO {}_shift
                                     (job_id, shift_day, shift_date, shift_start_time, shift_end_time, time_timestamp, total_hour, pay)
-                                    """
-                    return 'yes'
+                                    """.format(job_id[0], week_day, shift_date, check_start_time, check_end_time, ts, total_hour, total_pay)
+                    
+                    cursor.execute(insert_query)
+                    connection.commit()
+
+                    return {
+                        'msg': 'Shifte added!'
+                    }
                     
                 else:
-                    return 'no'
+                    return {
+                        'msg': 'You already have shift on this time'
+                    }
 
             else:
+                insert_query = """
+                                    INSERT INTO {}_shift
+                                    (job_id, shift_day, shift_date, shift_start_time, shift_end_time, time_timestamp, total_hour, pay)
+                                    """.format(job_id[0], week_day, shift_date, check_start_time, check_end_time, ts, total_hour, total_pay)
+                    
+                cursor.execute(insert_query)
+                connection.commit()
+
                 return {
-                    'msg': 'Shift added!'
+                    'msg': 'Shifte added!'
                 }
         else:
             return {
                 'msg': 'Given job is not exist'
             }
+        
     except Exception as e:
         return f"Error: {str(e)}"
 
