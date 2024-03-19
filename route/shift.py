@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from controller.shift import getShiftData, addShift
+from controller.shift import getShiftData, addShift, updateShitTime
 
 shift_blueprint = Blueprint('shifts', __name__)
  
@@ -10,3 +10,8 @@ def add_shift_api():
     data = addShift()
     return data
 
+@shift_blueprint.route('/shift/edit', methods=['POST'])
+def add_shift_api():
+    # Your API logic here
+    data = updateShitTime()
+    return data
