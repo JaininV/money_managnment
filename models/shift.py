@@ -82,8 +82,9 @@ def addShiftApi(data):
                 if count == 0:
                     insert_query = """
                                     INSERT INTO {}_shift
-                                    (job_id, shift_day, shift_date, shift_start_time, shift_end_time, time_timestamp, total_hour, pay)
-                                    """.format(job_id[0], week_day, shift_date, check_start_time, check_end_time, ts, total_hour, total_pay)
+                                    (job_id, shift_day, shift_date, shift_start_time, shift_end_time, time_timestamp, total_hours, pay)
+                                    VALUES({}, '{}', '{}', '{}', '{}', '{}', {}, {})
+                                    """.format(user_id, job_id[0], week_day, shift_date, start_time, end_time, ts, total_hour, total_pay)
                     
                     cursor.execute(insert_query)
                     connection.commit()
@@ -100,8 +101,9 @@ def addShiftApi(data):
             else:
                 insert_query = """
                                     INSERT INTO {}_shift
-                                    (job_id, shift_day, shift_date, shift_start_time, shift_end_time, time_timestamp, total_hour, pay)
-                                    """.format(job_id[0], week_day, shift_date, check_start_time, check_end_time, ts, total_hour, total_pay)
+                                    (job_id, shift_day, shift_date, shift_start_time, shift_end_time, time_timestamp, total_hours, pay)
+                                    VALUES({}, '{}', '{}', '{}', '{}', '{}', {}, {})
+                                    """.format(user_id, job_id[0], week_day, shift_date, start_time, end_time, ts, total_hour, total_pay)
                     
                 cursor.execute(insert_query)
                 connection.commit()
