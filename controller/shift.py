@@ -13,6 +13,7 @@ def getShiftData():
     
 # Add shift
 def addShift():
+    # funciton
     try: 
         data = request.form
         page = addShiftApi(data)
