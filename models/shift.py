@@ -126,9 +126,11 @@ def updateShiftTimeApi(data):
         token = loginCheckApi()
         user_id = token['user']
         job_name = data['job']
-        week_day = data['job_Day']
+        week_day = data['job_day']
         start_time = data['start_time']
         end_time = data['end_time']
+        previous_start_date = data['previous_start_date']
+        previous_end_date = data['previous_end_date']
 
         start_time = datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")
         ts = datetime.timestamp(start_time)
@@ -157,8 +159,8 @@ def updateShiftTimeApi(data):
             check  = """
                         SELECT job_id, shift_day, shift_date, shift_start_time, shift_end_time, time_timestamp, total_hours
                         FROM {}_shift 
-                        WHERE shift_date = '{}' AND shift_day = '{}'
-                    """.format(user_id, shift_date, )
+                        WHERE shift_start_date = '{}' AND shift_end_date = '{}' AND shift_day = '{}'
+                    """.format(user_id, previous_start_date, previous_end_date, week_day)
             
             # Execute check query
             cursor.execute(check)
@@ -203,7 +205,7 @@ def updateShiftTimeApi(data):
             return {
                 'msg': '4'
             }
-        
+        # return 'aas'
         
     except Exception as e:
         return f"Error: {str(e)}"
