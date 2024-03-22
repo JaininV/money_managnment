@@ -2,6 +2,7 @@
 # import api blueprint
 import flask
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+import datetime
 
 # Admin side api logic
 
@@ -15,7 +16,9 @@ from route.shift import shift_blueprint
 app = flask.Flask(__name__, template_folder='D:/D/Certification/Projects/Updated parking slot/public/', static_folder="static")
 
 # Functions for tokenization
+app.config["JWT_COOKIE_SECURE"] = False
 app.config['JWT_SECRET_KEY'] = 'my_key'
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = datetime.timedelta(hours=1)
 jwt = JWTManager(app)
 
 # Admin side api's

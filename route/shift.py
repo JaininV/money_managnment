@@ -12,8 +12,8 @@ def add_shift_api():
     except Exception as err:
         return f"Error: {err}"
 
-@shift_blueprint.route('/shift/edit', methods=['POST'])
-def add_shift_api():
+@shift_blueprint.route('/shift/edit', methods=['PUT'])
+def update_shift_api():
     try:
         data = updateShitTime()
         return data
