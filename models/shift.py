@@ -166,7 +166,7 @@ def updateShiftTimeApi(data):
             cursor.execute(check)
             check_result = cursor.fetchall()
             connection.commit()
-            count = 0
+            count = 10
 
             if check_result is not None:
                 length = len(check_result)
