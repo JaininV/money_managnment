@@ -152,7 +152,7 @@ def updateShiftTimeApi(data):
         job_id = cursor.fetchone()
         connection.commit()
 
-        # Check job is exist or not
+        # Check job is exist or not wkwk
         if job_id is not None:    
             # Arrange data for insert query
             total_pay = total_hour*job_id[1]
