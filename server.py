@@ -11,6 +11,7 @@ from route.users import user_blueprint
 from route.login import login_blueprint
 from route.job import job_blueprint
 from route.shift import shift_blueprint
+from route.income import income_blueprint
 
 
 app = flask.Flask(__name__, template_folder='D:/D/Certification/Projects/Updated parking slot/public/', static_folder="static")
@@ -29,6 +30,7 @@ app.register_blueprint(user_blueprint, url_prefix='/api')
 app.register_blueprint(login_blueprint, url_prefix='/api')
 app.register_blueprint(job_blueprint, url_prefix='/api')
 app.register_blueprint(shift_blueprint, url_prefix='/api')
+app.register_blueprint(income_blueprint, url_prefix='/api')
 
 #connect server
 try:

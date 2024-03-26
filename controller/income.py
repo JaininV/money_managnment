@@ -1,6 +1,6 @@
 #Import users function from model folder
 from flask import Flask, render_template, jsonify, request
-from models.shift import getShiftDataApi, addShiftApi, updateShiftTimeApi
+from models.income import getShiftDataApi, addShiftApi, updateShiftTimeApi
 import asyncio
  
 def getShiftData():
