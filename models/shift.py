@@ -200,4 +200,6 @@ def updateShiftTimeApi(data):
         
         
     except Exception as e:
-        return f"Error: {str(e)}"
+        return {
+            'msg' : e
+        }
