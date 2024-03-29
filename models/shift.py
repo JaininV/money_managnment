@@ -160,7 +160,7 @@ def updateShiftTimeApi(data):
                         SELECT job_id, shift_day, shift_date, shift_start_time, shift_end_time, time_timestamp, total_hours
                         FROM {}_shift 
                         WHERE shift_start_date = '{}' AND shift_end_date = '{}' AND shift_day = '{}'
-                    """.format(user_id, previous_start_date, previous_end_date, week_day)
+                    """.format(user_id, previous_start_date, previous_end_date, week_day) #zs
             
             # Execute check query
             cursor.execute(check)
