@@ -182,14 +182,8 @@ def updateShiftTimeApi(data):
                 connection.commit()
 
                 query = "UPDATE {}_shift SET time_timestamp = {} WHERE job_id = {} AND shift_end_time = '{}' AND shift_end_date = '{}'"
-                value = (user_id, week_day, shift_date, start_time, end_time, total_hour, total_pay, job_id[0], ts)
-                # for i in range(0, length):
-                #     check_start_time = check_result[i][3]
-                #     check_end_time = check_result[i][4]
-                    
-                #     if (check_start_time <= start_time and che ck_end_time >= start_time) or (check_start_time <= end_time and check_end_time >= end_time) or (start_time <= check_start_time and end_time >= check_start_time) or (start_time <= check_end_time and end_time >= check_end_time):
-                #         count = count + 1 
-                #         continue
+                value = (user_id, ts, job_id, end_time, start_time)
+                
                 return {
                     'msg: ' : 'Shift update sucessfully!'
                 }
