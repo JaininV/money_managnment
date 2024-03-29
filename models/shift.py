@@ -183,7 +183,7 @@ def updateShiftTimeApi(data):
 
                 query = "UPDATE {}_shift SET time_timestamp = {} WHERE job_id = {} AND shift_end_time = '{}' AND shift_end_date = '{}'"
                 value = (user_id, ts, job_id, end_time, start_time)
-                
+
                 return {
                     'msg: ' : 'Shift update sucessfully!'
                 }
@@ -197,7 +197,7 @@ def updateShiftTimeApi(data):
             return {
                 'msg': 'Job is not found.'
             }
-        # return 'aas'
+        
         
     except Exception as e:
         return f"Error: {str(e)}"
