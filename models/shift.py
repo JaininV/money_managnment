@@ -189,8 +189,17 @@ def updateShiftTimeApi(data):
                 }
 
             else:
+                insert_query = """
+                                    INSERT INTO {}_shift
+                                    (job_id, shift_day, shift_date, shift_start_time, shift_end_time, time_timestamp, total_hours, pay)
+                                    VALUES({}, '{}', '{}', '{}', '{}', '{}', {}, {})
+                                    """.format(user_id, job_id[0], week_day, shift_date, start_time, end_time, ts, total_hour, total_pay)
+                    
+                cursor.execute(insert_query)
+                connection.commit()
+
                 return {
-                    'msg': 'You do not have any shift in this time'
+                    'msg': 'Shift added!'
                 }
 
         else:
@@ -204,3 +213,8 @@ def updateShiftTimeApi(data):
         return {
             'msg' : e
         }
+
+
+
+
+
