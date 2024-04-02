@@ -3,7 +3,6 @@ from db_connection import connection, cursor
 from models.login import loginCheckApi
 from datetime import datetime
 import calendar
-import json
 
 # get all jobs
 def getShiftDataApi():
@@ -163,25 +162,27 @@ def updateShiftTimeApi(data):
             
             # Execute check query
             cursor.execute(check)
-            check_result = cursor.fetchall()
+            check_result = cursor.fetchone()
             connection.commit()
-            count = 0
-
-            if check_result is not None:
-                query = "UPDATE {}_shift SET job_id = {}, shift_day = '{}', shift_date = '{}', shift_start_time = '{}', shift_end_time = '{}', total_hours = {}, pay = {}"
-
-                    # insert_query = """
-                    #                 INSERT INTO {}_shift
-                    #                 (job_id, shift_day, shift_date, shift_start_time, shift_end_time, time_timestamp, total_hours, pay)
-                    #                 VALUES({}, '{}', '{}', '{}', '{}', '{}', {}, {})
-                    #                 """.format(user_id, job_id[0], week_day, shift_date, start_time, end_time, ts, total_hour, total_pay)                    
-                cursor.execute(query, value)
-                connection.commit()
-                return 'done'
             
+            if check_result is not None:
+                query = "UPDATE {}_shift SET shift_day = '{}', shift_date = '{}'. shift_start_time = '{}', shift_end_time = '{}', total_hours = {}, pay = {} WHERE shift_id = {} AND time_timestamp = {}".format(user_id,
+                                                                                                                                                                                                                week_day,
+                                                                                                                                                                                                                shift_date,
+                                                                                                                                                                                                                start_time,
+                                                                                                                                                                                                                end_time,
+                                                                                                                                                                                                                total_hour,
+                                                                                                                                                                                                                total_pay,
+                                                                                                                                                                                                                check_result[0],
+                                                                                                                                                                                                                ts)
+                print(query)
+                return {
+                    'msg': 'done'
+                }
+
             else:
                 return {
-                    'msg': 'You already have shift!'
+                    'msg': 'You do not have any job on this time.'
                 }
             
         else:
