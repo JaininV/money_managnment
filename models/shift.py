@@ -129,11 +129,11 @@ def updateShiftTimeApi(data):
         week_day = data['job_day']
         start_time = data['start_time']
         end_time = data['end_time']
-        previous_start_date = data['previous_start_date']
-        previous_end_date = data['previous_end_date']
+        previous_start_date = data['previous_start_time']
+        previous_end_date = data['previous_end_time']
 
         start_time = datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")
-        ts = datetime.timestamp(start_time)
+        ts = datetime.timestamp(previous_start_date)
         shift_date = start_time.date()
         end_time = datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
         
@@ -159,10 +159,10 @@ def updateShiftTimeApi(data):
             check  = """
                         SELECT job_id, shift_day, shift_date, shift_start_time, shift_end_time, time_timestamp, total_hours
                         FROM {}_shift 
-                        WHERE shift_start_date = '{}' AND shift_end_date = '{}' AND shift_day = '{}'
+                        WHERE shift_start_time = '{}' AND shift_end_time = '{}' AND shift_day = '{}'
                     """.format(user_id, previous_start_date, previous_end_date, week_day) #zs
             
-            # Execute check query
+            # # Execute check query
             cursor.execute(check)
             check_result = cursor.fetchall()
             connection.commit()
@@ -170,7 +170,7 @@ def updateShiftTimeApi(data):
 
             if check_result is not None:
                 length = len(check_result)
-                query = "UPDATE {}_shift SET shift_day = '{}', shift_date = '{}'. shift_start_time = '{}', shift_end_time = '{}', shift_end_time = '{}', total_hours = {}, pay = {} WHERE job_id = {} AND time_timestamp = {}"
+                query = "UPDATE {}_shift SET shift_day = '{}', shift_date = '{}'. shift_start_time = '{}', shift_end_time = '{}', total_hours = {}, pay = {} WHERE job_id = {} AND time_timestamp = {}"
                 value = (user_id, week_day, shift_date, start_time, end_time, total_hour, total_pay, job_id[0], ts)
 
                     # insert_query = """
@@ -181,8 +181,9 @@ def updateShiftTimeApi(data):
                 cursor.execute(query, value)
                 connection.commit()
 
+                ts = datetime.timestamp(start_time)
                 query = "UPDATE {}_shift SET time_timestamp = {} WHERE job_id = {} AND shift_end_time = '{}' AND shift_end_date = '{}'"
-                value = (user_id, ts, job_id, end_time, start_time)
+                value = (user_id, ts, job_id[0], end_time, start_time)
 
                 return {
                     'msg: ' : 'Shift update sucessfully!'
@@ -206,9 +207,8 @@ def updateShiftTimeApi(data):
             return {
                 'msg': 'Job is not found.'
             }
-        # change remote
-        
-        
+        # # change remote
+        # return 'sa'
     except Exception as e:
         return {
             'msg' : e
