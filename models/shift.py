@@ -121,100 +121,101 @@ def addShiftApi(data):
     
 
 # Update shift time
-def updateShiftTimeApi(data):
-    try:
-        token = loginCheckApi()
-        user_id = token['user']
-        job_name = data['job']
-        week_day = data['job_day']
-        start_time = data['start_time']
-        end_time = data['end_time']
-        previous_start_date = data['previous_start_time']
-        previous_end_date = data['previous_end_time']
 
-        start_time = datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")
-        ts = datetime.timestamp(previous_start_date)
-        shift_date = start_time.date()
-        end_time = datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
-        
-        diff = end_time - start_time
-        days, seconds = diff.days, diff.seconds
-        total_hour = days * 24 + seconds / 3600
-        
-        # take id from job tabel
-        job_id_query = """
-                    SELECT job_id, wage 
-                    FROM {}_job
-                    WHERE job_name = '{}' AND status = 'active'
-                    """.format(user_id, job_name)
-        
-        cursor.execute(job_id_query)
-        job_id = cursor.fetchone()
-        connection.commit()
 
-        # Check job is exist or not
-        if job_id is not None:    
-            # Check shift is exist or not
-            total_pay = total_hour*job_id[1]
-            check  = """
-                        SELECT job_id, shift_day, shift_date, shift_start_time, shift_end_time, time_timestamp, total_hours
-                        FROM {}_shift 
-                        WHERE shift_start_time = '{}' AND shift_end_time = '{}' AND shift_day = '{}'
-                    """.format(user_id, previous_start_date, previous_end_date, week_day) #zs
+
+
+
+
+# def updateShiftTimeApi(data):
+#     try:
+#         token = loginCheckApi()
+#         user_id = token['user']
+#         job_name = data['job']
+#         week_day = data['job_day']
+#         start_time = data['start_time']
+#         end_time = data['end_time']
+#         previous_start_date = data['previous_start_time']
+#         previous_end_date = data['previous_end_time']
+
+#         start_time = datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")
+#         ts = datetime.timestamp(start_time)
+#         shift_date = start_time.date()
+#         end_time = datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
+        
+#         diff = end_time - start_time
+#         days, seconds = diff.days, diff.seconds
+#         total_hour = days * 24 + seconds / 3600
+        
+#         # take id from job tabel
+#         job_id_query = """
+#                     SELECT job_id, wage 
+#                     FROM {}_job
+#                     WHERE job_name = '{}' AND status = 'active'
+#                     """.format(user_id, job_name)
+        
+#         cursor.execute(job_id_query)
+#         job_id = cursor.fetchone()
+#         connection.commit()
+
+#         # Check job is exist or not
+#         if job_id is not None:    
+#             # Check shift is exist or not
+#             total_pay = total_hour*job_id[1]
+#             check  = """
+#                         SELECT job_id, shift_day, shift_date, shift_start_time, shift_end_time, time_timestamp, total_hours
+#                         FROM {}_shift 
+#                         WHERE shift_start_time = '{}' AND shift_end_time = '{}' AND shift_day = '{}'
+#                     """.format(user_id, previous_start_date, previous_end_date, week_day) #zs
             
-            # # Execute check query
-            cursor.execute(check)
-            check_result = cursor.fetchall()
-            connection.commit()
-            count = 0
+#             # # Execute check query
+#             cursor.execute(check)
+#             check_result = cursor.fetchall()
+#             connection.commit()
+#             count = 0
 
-            if check_result is not None:
-                length = len(check_result)
-                query = "UPDATE {}_shift SET shift_day = '{}', shift_date = '{}'. shift_start_time = '{}', shift_end_time = '{}', total_hours = {}, pay = {} WHERE job_id = {} AND time_timestamp = {}"
-                value = (user_id, week_day, shift_date, start_time, end_time, total_hour, total_pay, job_id[0], ts)
+#             if check_result is not None:
+#                 length = len(check_result)
+#                 query = "UPDATE {}_shift SET shift_day = '{}', shift_date = '{}'. shift_start_time = '{}', shift_end_time = '{}', shift_end_time = '{}', total_hours = {}, pay = {} WHERE job_id = {} AND time_timestamp = {}"
+#                 value = (user_id, week_day, shift_date, start_time, end_time, total_hour, total_pay, job_id[0], ts)
 
-                    # insert_query = """
-                    #                 INSERT INTO {}_shift
-                    #                 (job_id, shift_day, shift_date, shift_start_time, shift_end_time, time_timestamp, total_hours, pay)
-                    #                 VALUES({}, '{}', '{}', '{}', '{}', '{}', {}, {})
-                    #                 """.format(user_id, job_id[0], week_day, shift_date, start_time, end_time, ts, total_hour, total_pay)                    
-                cursor.execute(query, value)
-                connection.commit()
+#                     # insert_query = """
+#                     #                 INSERT INTO {}_shift
+#                     #                 (job_id, shift_day, shift_date, shift_start_time, shift_end_time, time_timestamp, total_hours, pay)
+#                     #                 VALUES({}, '{}', '{}', '{}', '{}', '{}', {}, {})
+#                     #                 """.format(user_id, job_id[0], week_day, shift_date, start_time, end_time, ts, total_hour, total_pay)                    
+#                 cursor.execute(query, value)
+#                 connection.commit()
 
-                ts = datetime.timestamp(start_time)
-                query = "UPDATE {}_shift SET time_timestamp = {} WHERE job_id = {} AND shift_end_time = '{}' AND shift_end_date = '{}'"
-                value = (user_id, ts, job_id[0], end_time, start_time)
+#                 query = "UPDATE {}_shift SET time_timestamp = {} WHERE job_id = {} AND shift_end_time = '{}' AND shift_end_date = '{}'"
+#                 value = (user_id, ts, job_id, end_time, start_time)
 
-                return {
-                    'msg: ' : 'Shift update sucessfully!'
-                }
+#                 return {
+#                     'msg: ' : 'Shift update sucessfully!'
+#                 }
 
-            else:
-                insert_query = """
-                                    INSERT INTO {}_shift
-                                    (job_id, shift_day, shift_date, shift_start_time, shift_end_time, time_timestamp, total_hours, pay)
-                                    VALUES({}, '{}', '{}', '{}', '{}', '{}', {}, {})
-                                    """.format(user_id, job_id[0], week_day, shift_date, start_time, end_time, ts, total_hour, total_pay)
+#             else:
+#                 insert_query = """
+#                                     INSERT INTO {}_shift
+#                                     (job_id, shift_day, shift_date, shift_start_time, shift_end_time, time_timestamp, total_hours, pay)
+#                                     VALUES({}, '{}', '{}', '{}', '{}', '{}', {}, {})
+#                                     """.format(user_id, job_id[0], week_day, shift_date, start_time, end_time, ts, total_hour, total_pay)
                     
-                cursor.execute(insert_query)
-                connection.commit()
+#                 cursor.execute(insert_query)
+#                 connection.commit()
 
-                return {
-                    'msg': 'Shift added!'
-                }
+#                 return {
+#                     'msg': 'Shift added!'
+#                 }
+#             \
 
-        else:
-            return {
-                'msg': 'Job is not found.'
-            }
-        # # change remote
-        # return 'sa'
-    except Exception as e:
-        return {
-            'msg' : e
-        }
-
-
-
-
-
+#         else:
+#             return {
+#                 'msg': 'Job is not found.'
+#             }
+#         # # change remote
+#         # return 'sa'
+#     except Exception as e:
+#         return {
+#             'msg' : e
+#         }
