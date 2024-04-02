@@ -121,8 +121,46 @@ def addShiftApi(data):
     
 
 # Update shift time
+def updateShiftTimeApi(data):
+    try:
+        token = loginCheckApi()
+        user_id = token['user']
+        job_name = data['job']
+        week_day = data['job_day']
+        start_time = data['start_time']
+        end_time = data['end_time']
+        previous_start_date = data['previous_start_time']
+        previous_end_date = data['previous_end_time']
 
+        start_time = datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")
+        ts = datetime.timestamp(start_time)
+        shift_date = start_time.date()
+        end_time = datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
 
+        diff = end_time - start_time
+        days, seconds = diff.days, diff.seconds
+        total_hour = days * 24 + seconds / 3600
+
+        # take id from job tabel
+        job_id_query = """
+                    SELECT job_id, wage 
+                    FROM {}_job
+                    WHERE job_name = '{}' AND status = 'active'
+                     """.format(user_id, job_name)
+
+        cursor.execute(job_id_query)
+        job_id = cursor.fetchone()
+        connection.commit()
+
+        if job_id is not None:
+            return 'done'
+        else:
+            return 'not done'
+        
+    except Exception as e:
+        return {
+            'msg': e
+        }
 
 
 
