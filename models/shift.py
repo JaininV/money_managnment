@@ -176,6 +176,9 @@ def updateShiftTimeApi(data):
                                                                                                                                                                                                                 check_result[0],
                                                                                                                                                                                                                 ts)
                 print(query)
+                cursor.execute(query)
+                connection.commit()
+                
                 return {
                     'msg': 'done'
                 }
