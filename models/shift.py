@@ -123,6 +123,28 @@ def addShiftApi(data):
 def updateShiftTimeApi(data):
     try:
         token = loginCheckApi()
+        user_id = token['user']
+
+        job = data['job']
+        job_type = data['job_day']
+        previous_start_time = data['previous_start_time']
+        previous_end_time = data['previous_end_time']
+        start_time = data['start_time']
+        end_time = data['end_time']
+
+        start_time = datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")
+        start_ts = datetime.timestamp(start_time)
+        
+        previous_start_time = datetime.strptime(previous_start_time, "%Y-%m-%d %H:%M:%S")
+        previous_start_ts = datetime.timestamp(previous_start_time)
+
+        # Fetch existing data
+        query = """SELECT * FROM {}_shift WHERE time_timestamp = {}""".format(user_id, previous_start_ts)
+        cursor.execute(query)
+        result = cursor.fetchall()
+        connection.commit()
+
+        return result
     
     except Exception as e:
         return f"Error: {str(e)}"
