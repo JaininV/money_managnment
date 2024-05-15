@@ -126,7 +126,7 @@ def updateShiftTimeApi(data):
         user_id = token['user']
 
         job = data['job']
-        job_type = data['job_day']
+        job_day = data['job_day']
         previous_start_time = data['previous_start_time']
         previous_end_time = data['previous_end_time']
         start_time = data['start_time']
@@ -135,10 +135,17 @@ def updateShiftTimeApi(data):
         previous_start_time = datetime.strptime(previous_start_time, "%Y-%m-%d %H:%M:%S")
         previous_end_time = datetime.strptime(previous_end_time, "%Y-%m-%d %H:%M:%S")
         previous_start_ts = datetime.timestamp(previous_start_time)
-        
+
         start_time = datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")
         end_time = datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
         start_ts = datetime.timestamp(start_time)
+
+        # Check Job is exist or not
+        job_query = """SELECT job_id from {}_job WHERE job_name = '{}' AND status = '{}'""".format(user_id, job, 'active')
+        cursor.execute(job_query)
+        job_result = cursor.fetchall()
+        connection.commit()
+        
 
         # Fetch existing data
         query = """SELECT * FROM {}_shift WHERE time_timestamp = {}""".format(user_id, previous_start_ts)
