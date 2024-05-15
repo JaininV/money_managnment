@@ -137,6 +137,7 @@ def updateShiftTimeApi(data):
         previous_start_ts = datetime.timestamp(previous_start_time)
 
         start_time = datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")
+        shift_date = start_time.date()
         end_time = datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
         start_ts = datetime.timestamp(start_time)
 
@@ -166,9 +167,45 @@ def updateShiftTimeApi(data):
             
             else:
                 # Check is any other shift is therre in given time
-                return {
-                    'msg': shift_result
-                }
+                check_shift  = """
+                        SELECT job_id, shift_day, shift_date, shift_start_time, shift_end_time, time_timestamp, total_hours
+                        FROM {}_shift 
+                        WHERE shift_date = '{}'
+                    """.format(user_id, shift_date)
+                cursor.execute(check_shift)
+                check_result = cursor.fetchall()
+                connection.commit()
+                count = 0
+
+                if check_result is None:
+                    return 'No shift'
+                
+                else:
+                    length = len(check_result)
+                    for i in range(0, length):
+                        check_start_time = check_result[i][3]
+                        check_end_time = check_result[i][4]
+                        
+                        if (check_start_time <= start_time and check_end_time >= start_time) or (check_start_time <= end_time and check_end_time >= end_time) or (start_time <= check_start_time and end_time >= check_start_time) or (start_time <= check_end_time and end_time >= check_end_time):
+                            count = count + 1
+                    
+                    # Update shift
+                    if count == 0:
+                        # insert_query = """
+                        #                 INSERT INTO {}_shift
+                        #                 (job_id, shift_day, shift_date, shift_start_time, shift_end_time, time_timestamp, total_hours, pay)
+                        #                 VALUES({}, '{}', '{}', '{}', '{}', '{}', {}, {})
+                        #                 """.format(user_id, job_id[0], week_day, shift_date, start_time, end_time, ts, total_hour, total_pay)
+                        # cursor.execute(insert_query)
+                        # connection.commit()
+                        return {
+                            'msg': 'Shifte added!'
+                        }
+                        
+                    else:
+                        return {
+                            'msg': 'You already have shift on this time'
+                        }
         
     except Exception as e:
         return f"Error: {str(e)}"
