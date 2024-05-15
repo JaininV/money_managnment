@@ -146,14 +146,29 @@ def updateShiftTimeApi(data):
         job_result = cursor.fetchall()
         connection.commit()
         
+        if job_result is None:
+            return {
+                'msg': 'There is no job as {job}'
+            }
 
-        # Fetch existing data
-        query = """SELECT * FROM {}_shift WHERE time_timestamp = {}""".format(user_id, previous_start_ts)
-        cursor.execute(query)
-        result = cursor.fetchall()
-        connection.commit()
+        else:
+            # Check shift exist or not
+            job_id = job_result[0][0]
+            shift_query = """SELECT * FROM {}_shift WHERE time_timestamp = {} AND job_id = {}""".format(user_id, previous_start_ts, job_id)
+            cursor.execute(shift_query)
+            shift_result = cursor.fetchall()
+            connection.commit()
 
-        return result
-    
+            if shift_result is None:
+                return {
+                    'msg': 'There is no shift on these time'
+                }
+            
+            else:
+                # Check is any other shift is therre in given time
+                return {
+                    'msg': shift_result
+                }
+        
     except Exception as e:
         return f"Error: {str(e)}"
