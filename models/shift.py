@@ -132,11 +132,13 @@ def updateShiftTimeApi(data):
         start_time = data['start_time']
         end_time = data['end_time']
 
-        start_time = datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")
-        start_ts = datetime.timestamp(start_time)
-        
         previous_start_time = datetime.strptime(previous_start_time, "%Y-%m-%d %H:%M:%S")
+        previous_end_time = datetime.strptime(previous_end_time, "%Y-%m-%d %H:%M:%S")
         previous_start_ts = datetime.timestamp(previous_start_time)
+        
+        start_time = datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")
+        end_time = datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
+        start_ts = datetime.timestamp(start_time)
 
         # Fetch existing data
         query = """SELECT * FROM {}_shift WHERE time_timestamp = {}""".format(user_id, previous_start_ts)
