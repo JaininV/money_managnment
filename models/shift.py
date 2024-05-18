@@ -197,23 +197,23 @@ def updateShiftTimeApi(data):
                     # Update shift
                     if count == 0:
                         total_pay = total_hour*job_result[0][1]
-                        shift_id = shift_result[0][0]
-                        
-                        update_query = """
-                                        UPDATE {}_shift 
-                                        SET job_id = {}, shift_day = '{}', shift_start_time = '{}', shift_end_time = '{}', total_hours = {}, pay = {}
-                                        WHERE shift_id = {} AND time_timestamp = {}
-                                        """.format(user_id, job_id, week_day, start_time, end_time, total_hour, total_pay, shift_id, start_ts)
-                        cursor.execute(update_query)
-                        connection.commit()
+                        shift_id = shift_result
+                        print(shift_id)
+                        # update_query = """
+                        #                 UPDATE {}_shift 
+                        #                 SET job_id = {}, shift_day = '{}', shift_start_time = '{}', shift_end_time = '{}', total_hours = {}, pay = {}
+                        #                 WHERE shift_id = {} AND time_timestamp = {}
+                        #                 """.format(user_id, job_id, week_day, start_time, end_time, total_hour, total_pay, shift_id, start_ts)
+                        # cursor.execute(update_query)
+                        # connection.commit()
 
-                        update_query = """
-                                        UPDATE {}_shift 
-                                        SET time_timestamp = {}
-                                        WHERE shift_id = {}
-                                        """.format(user_id, start_ts, shift_id)
-                        cursor.execute(update_query)
-                        connection.commit()
+                        # update_query = """
+                        #                 UPDATE {}_shift 
+                        #                 SET time_timestamp = {}
+                        #                 WHERE shift_id = {}
+                        #                 """.format(user_id, start_ts, shift_id)
+                        # cursor.execute(update_query)
+                        # connection.commit()
 
                         return {
                             'msg': 'Shifte added!'
