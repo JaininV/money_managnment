@@ -183,7 +183,7 @@ def updateShiftTimeApi(data):
                 count = 0
 
                 if check_result is None:
-                    return 'No shift'
+                    return 'No shift '
                 
                 else:
                     length = len(check_result)
