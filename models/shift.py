@@ -194,7 +194,6 @@ def updateShiftTimeApi(data):
                         if (check_start_time <= start_time and check_end_time >= start_time) or (check_start_time <= end_time and check_end_time >= end_time) or (start_time <= check_start_time and end_time >= check_start_time) or (start_time <= check_end_time and end_time >= check_end_time) and (check_start_time != start_time and check_end_time != end_time):
                             count = count + 1
                     
-        
                     # Update shift
                     if count == 0:
                         total_pay = total_hour*job_result[0][1]
