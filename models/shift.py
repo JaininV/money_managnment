@@ -180,13 +180,13 @@ def updateShiftTimeApi(data):
                 cursor.execute(check_shift)
                 check_result = cursor.fetchall()
                 connection.commit()
-                count = 0
 
                 if check_result is None:
                     return 'No shift '
                 
                 else:
                     length = len(check_result)
+                    count = 0
                     for i in range(0, length):
                         check_start_time = check_result[i][3]
                         check_end_time = check_result[i][4]
@@ -194,7 +194,7 @@ def updateShiftTimeApi(data):
                         if (check_start_time <= start_time and check_end_time >= start_time) or (check_start_time <= end_time and check_end_time >= end_time) or (start_time <= check_start_time and end_time >= check_start_time) or (start_time <= check_end_time and end_time >= check_end_time) and (check_start_time != start_time and check_end_time != end_time):
                             count = count + 1
                     
-                    print(count)
+        
                     # Update shift
                     if count == 0:
                         total_pay = total_hour*job_result[0][1]
