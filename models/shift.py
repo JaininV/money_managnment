@@ -191,7 +191,7 @@ def updateShiftTimeApi(data):
                         check_start_time = check_result[i][3]
                         check_end_time = check_result[i][4]
                         
-                        if (check_start_time <= start_time and check_end_time >= start_time) or (check_start_time <= end_time and check_end_time >= end_time) or (start_time <= check_start_time and end_time >= check_start_time) or (start_time <= check_end_time and end_time >= check_end_time) or (check_start_time != start_time and check_end_time != end_time):
+                        if (check_start_time <= start_time and check_end_time >= start_time) or (check_start_time <= end_time and check_end_time >= end_time) or (start_time <= check_start_time and end_time >= check_start_time) or (start_time <= check_end_time and end_time >= check_end_time) and (check_start_time != start_time and check_end_time != end_time):
                             count = count + 1
                     
                     print(count)
@@ -202,7 +202,7 @@ def updateShiftTimeApi(data):
                         print(shift_id)
                         # update_query = """
                         #                 UPDATE {}_shift 
-                        #                 SET job_id = {}, shift_day = '{}', shift_start_time = '{}', shift_end_time = '{}', total_hours = {}, pay = {}
+                        #                 SET job_id = {}, shift_day = '{}', shift_start_ti me = '{}', shift_end_time = '{}', total_hours = {}, pay = {}
                         #                 WHERE shift_id = {} AND time_timestamp = {}
                         #                 """.format(user_id, job_id, week_day, start_time, end_time, total_hour, total_pay, shift_id, start_ts)
                         # cursor.execute(update_query)
