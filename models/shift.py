@@ -228,3 +228,21 @@ def updateShiftTimeApi(data):
         
     except Exception as e:
         return f"Error: {str(e)}"
+    
+# Delete shift new jobs
+def deleteShiftApi(data):
+    try:
+        token = loginCheckApi()
+        user_id = token['user']
+        start_time = data['start_time']
+        start_time = datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")
+        ts = datetime.timestamp(start_time)
+        shift_date = start_time.date()
+        end_time = data['end_time']
+        end_time = datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
+        
+        
+        return f"{user_id}"
+        
+    except Exception as e:
+        return f"Error: {str(e)}"
