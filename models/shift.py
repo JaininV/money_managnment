@@ -234,6 +234,7 @@ def deleteShiftApi(data):
     try:
         token = loginCheckApi()
         user_id = token['user']
+        id = data['id']
         start_time = data['start_time']
         start_time = datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")
         ts = datetime.timestamp(start_time)
@@ -241,8 +242,16 @@ def deleteShiftApi(data):
         end_time = data['end_time']
         end_time = datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
         
-        
-        return f"{user_id}"
+        # Check existing shift
+        check_query = """
+                SELECT * FROM {}_shift WHERE shift_id = {} AND time_timestamp = {}
+            """.format(user_id, id, ts)
+        res = cursor.execute(check_query)
+        connection.commit()
+
+        return {
+            'data': res
+        }
         
     except Exception as e:
         return f"Error: {str(e)}"
