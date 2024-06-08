@@ -247,6 +247,8 @@ def deleteShiftApi(data):
                 SELECT * FROM {}_shift WHERE shift_id = {} AND time_timestamp = {}
             """.format(user_id, id, ts)
         res = cursor.execute(check_query)
+        print(1)
+        # dsd
         
         connection.commit()
 
