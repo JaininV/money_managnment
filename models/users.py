@@ -188,7 +188,6 @@ def deleteDataApi(data):
                 results = connection.commit()
                 cursor.close()
                 connection.close()
-                print(1)
                 return f'data is Deleted!'
         
             except Exception as e:
