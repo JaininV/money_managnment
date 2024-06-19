@@ -188,7 +188,7 @@ def deleteDataApi(data):
                 results = connection.commit()
                 cursor.close()
                 connection.close()
-                return f'data is Deleted!'
+                return f'data is Deleted'
         
             except Exception as e:
                 return f"Error: {str(e)}"
