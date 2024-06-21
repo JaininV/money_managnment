@@ -111,7 +111,7 @@ def addShiftApi(data):
                     'msg': 'Shifte added!'
                 }
         else:
-            print(1)
+            
             return {
                 'msg': 'Given job is not exist'
             }
