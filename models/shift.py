@@ -117,6 +117,7 @@ def addShiftApi(data):
             }
         
     except Exception as e:
+        print(1)
         return f"Error: {str(e)}"
     
 
