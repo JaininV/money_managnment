@@ -117,7 +117,7 @@ def addShiftApi(data):
             }
         
     except Exception as e:
-        
+        https://www.linkedin.com/in/jaininvekariya/
         return f"Error: {str(e)}"
     
 
