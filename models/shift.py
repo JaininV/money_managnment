@@ -114,7 +114,7 @@ def addShiftApi(data):
             
             return {
                 'msg': 'Given job is not exist'
-            }esfw
+            }
         
     except Exception as e:
         
