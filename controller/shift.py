@@ -40,5 +40,4 @@ def deleteShift():
         return page
     
     except Exception as e:
-        print("I am back baby")
         return f"Error: {str(e)}"
