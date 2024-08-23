@@ -8,7 +8,7 @@ import calendar
      
 # Add new jobs
 def addShiftApi(data):
-    try:
+    # try:
         token = loginCheckApi()
         user_id = token['user']
         name = data['name']
@@ -18,8 +18,8 @@ def addShiftApi(data):
             'Name': name
         }       
         
-    except Exception as e:
+    # except Exception as e:
         
-        return f"Error: {str(e)}"
+    #     return f"Error: {str(e)}"
     
 
