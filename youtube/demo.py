@@ -1,1 +1,2 @@
-import moviepy
+from moviepy.video.io.VideoFileClip import VideoFileClip
+import os
