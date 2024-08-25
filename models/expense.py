@@ -7,7 +7,7 @@ import calendar
 # get all jobs
      
 # Add new jobs
-def addShiftApi(data):
+def addShiftApi(data):x
     # try:
         token = loginCheckApi()
         user_id = token['user']
