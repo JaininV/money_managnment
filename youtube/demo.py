@@ -6,8 +6,16 @@ def split_video(inp, out_dr, duration=60):
     video = VideoFileClip(inp)
 
     video_len = int(video.duration)
-    print(video_len)
 
-inp = "D:/D/Certification/Projects/Money handle/youtube/yt1s.com - 4K Planet Earth Spinning in Space  Free HD Videos  No Copyright_1080p.mp4"
+    clip = (video_len // duration) + 1
+    
+
+    # split video
+    for i in range(clip):
+        start_time = i * duration
+        end_time = min((i+1)*duration, video_len)
+        
+
+inp = "C:/Users/Owner/Videos/Captures/Mood mappers - Brave 2023-07-19 23-08-04.mp4"
 dir = "D:/D/Certification/Projects/Money handle/youtube/clips"
-split_video(inp, dir, )
+split_video(inp, dir)
