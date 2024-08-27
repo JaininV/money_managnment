@@ -4,7 +4,7 @@ import os
 def split_video(inp, out_dr, duration=600):
     # Load video
     video = VideoFileClip(inp)
-    print(video)
+    
     video_len = int(video.duration)
 
     clip = (video_len // duration) + 1
