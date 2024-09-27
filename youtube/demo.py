@@ -1,7 +1,7 @@
 from moviepy.video.io.VideoFileClip import VideoFileClip
 import os
 
-def split_video(inp, out_dr, duration=600):
+def split_video(inp, out_dr, duration=780):
     # Load video
     video = VideoFileClip(inp)
     
@@ -23,6 +23,6 @@ def split_video(inp, out_dr, duration=600):
 
     print("Video splitting")        
 
-inp = "D:/F/Family/highlight.mp4"
-dir = "C:/Users/Owner/icloud/iCloudDrive/demo"
+inp = "D:/E/Data science - Udemy/part2/06 - Pandas_ Data Analysis/009 Manipulating Data.mp4"
+dir = "C:/Users/Owner/icloud/iCloudDrive/Videos"
 split_video(inp, dir)
