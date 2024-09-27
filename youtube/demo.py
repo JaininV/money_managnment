@@ -24,5 +24,5 @@ def split_video(inp, out_dr, duration=600):
     print("Video splitting")        
 
 inp = "D:/F/Family/highlight.mp4"
-dir = "D:/D/Certification/Projects/Money handle/youtube/clips"
+dir = "C:/Users/Owner/icloud/iCloudDrive/demo"
 split_video(inp, dir)
