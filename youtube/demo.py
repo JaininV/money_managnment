@@ -23,6 +23,6 @@ def split_video(inp, out_dr, duration=780):
 
     print("Video splitting")        
 
-inp = "D:/E/Data science - Udemy/part2/06 - Pandas_ Data Analysis/009 Manipulating Data.mp4"
-dir = "C:/Users/Owner/icloud/iCloudDrive/Videos"
+inp = "C:/Users/Owner/icloud/iCloudDrive/IP VIDEO"
+dir = "C:/Users/Owner/icloud/iCloudDrive/OP VIDEOS"
 split_video(inp, dir)
