@@ -1,28 +1,31 @@
-from moviepy.video.io.VideoFileClip import VideoFileClip
+from moviepy.editor import VideoFileClip
+import math
 import os
 
-def split_video(inp, out_dr, duration=780):
-    # Load video
-    video = VideoFileClip(inp)
-    
-    video_len = int(video.duration)
+def split_video(inp_path, out_dir, chunk_len=780):
+    # Ensure output directory exists
+    os.makedirs(out_dir, exist_ok=True)
 
-    clip = (video_len // duration) + 1
-    
+    # Open the video safely
+    with VideoFileClip(inp_path) as video:
+        total_sec = int(video.duration)
+        n_chunks = math.ceil(total_sec / chunk_len)
 
-    # split video
-    for i in range(clip):
-        start_time = i * duration
-        end_time = min((i+1)*duration, video_len)
+        for i in range(n_chunks):
+            start = i * chunk_len
+            end   = min((i + 1) * chunk_len, total_sec)
 
-        sub_clip = video.subclip(start_time, end_time)
-        out_file = os.path.join(out_dr, f'clip_{i+1}.mp4')
+            out_file = os.path.join(out_dir, f'clip_{i + 1}.mp4')
+            (video.subclip(start, end)
+                  .write_videofile(out_file,
+                                   codec="libx264",
+                                   audio_codec="aac",
+                                   temp_audiofile="temp-audio.m4a",
+                                   remove_temp=True))
+            print(f"Saved {out_file}")
 
-        sub_clip.write_videofile(out_file, codec="libx264", audio_codec="aac")
-        print(f"Saved {out_file}")
+# Example usage
+inp_path = r"D:\D\Projects\Money handle\youtube\clips\clip_1.mp4"
+out_dir  = r"D:\D\Projects\Money handle\youtube\video_clip"
 
-    print("Video splitting")        
-
-inp = "C:/Users/Owner/icloud/iCloudDrive/IP VIDEO"
-dir = "C:/Users/Owner/icloud/iCloudDrive/OP VIDEOS"
-split_video(inp, dir)
+split_video(inp_path, out_dir)
